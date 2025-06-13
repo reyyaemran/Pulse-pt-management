@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String
+  password      String
+  role          String    @default("USER") // ADMIN, USER
+  phone         String?
+  bio           String?
+  specialties   String?
+  certifications String?
+  location      String?
+  avatar        String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  clients       Client[]
+  appointments  Appointment[]
+  workingHours  WorkingHours?
+}
+
+model WorkingHours {
+  id            String    @id @default(uuid())
+  monday        String    // { enabled: boolean, start: string, end: string }
+  tuesday       String
+  wednesday     String
+  thursday      String
+  friday        String
+  saturday      String
+  sunday        String
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Client {
+  id            String    @id @default(cuid())
+  clientNumber  String    @unique // 6-digit unique client/member ID
+  firstName     String
+  lastName      String
+  email         String    @unique
+  phone         String?
+  dateOfBirth   DateTime?
+  address       String?
+  medicalHistory String?
+  injuries      String?
+  goals         String?
+  notes         String?
+  startDate     DateTime?
+  expirationDate DateTime?
+  sessionPackage String?
+  sessionsRemaining Int?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  userId        String    // Foreign key to User
+  user          User      @relation(fields: [userId], references: [id])
+  appointments  Appointment[]
+  exercises     Exercise[]
+  packages      Package[]
+}
+
+model Package {
+  id            String    @id @default(uuid())
+  packageNumber String    @unique // 6-digit unique package ID
+  type          String    // e.g., "5", "10", "20", "30", "40"
+  sessions      Int
+  sessionsUsed  Int       @default(0)
+  startDate     DateTime
+  expirationDate DateTime
+  paymentStatus String    // "paid", "pending", "partial"
+  amount        Float?
+  voided        Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  clientId      String
+  client        Client    @relation(fields: [clientId], references: [id])
+}
+
+model Appointment {
+  id            String    @id @default(uuid())
+  title         String
+  startTime     DateTime
+  endTime       DateTime
+  status        String    @default("SCHEDULED") // SCHEDULED, COMPLETED, CANCELLED
+  type          String?   // e.g., "Strength Training", "Cardio"
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  userId        String    // Foreign key to User
+  user          User      @relation(fields: [userId], references: [id])
+  clientId      String    // Foreign key to Client
+  client        Client    @relation(fields: [clientId], references: [id])
+}
+
+model Exercise {
+  id            String    @id @default(uuid())
+  name          String
+  description   String?
+  category      String    // e.g., "Strength Training", "Cardio", "Flexibility"
+  difficulty    String    @default("beginner") // beginner, intermediate, advanced, expert
+  equipment     String?
+  sets          Int
+  reps          Int
+  duration      Int?      // in seconds, optional
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  clientId      String    // Foreign key to Client
+  client        Client    @relation(fields: [clientId], references: [id])
+  muscleGroups  ExerciseMuscleGroup[]
+}
+
+model ExerciseMuscleGroup {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  exercises   Exercise[]
+}
+
+

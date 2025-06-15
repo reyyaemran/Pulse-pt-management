@@ -107,18 +107,21 @@ model Exercise {
   id            String    @id @default(uuid())
   name          String
   description   String?
-  category      String    // e.g., "Strength Training", "Cardio", "Flexibility"
-  difficulty    String    @default("beginner") // beginner, intermediate, advanced, expert
+  category      String
+  difficulty    String    @default("beginner")
   equipment     String?
-  sets          Int
-  reps          Int
-  duration      Int?      // in seconds, optional
+  targetMuscles String?
+  instructions  Json?
+  tips          Json?
+  variations    Json?
+  sets          Int?
+  reps          Int?
+  duration      Int?
   notes         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  clientId      String    // Foreign key to Client
-  client        Client    @relation(fields: [clientId], references: [id])
-  muscleGroups  ExerciseMuscleGroup[]
+  clientId      String?   // Now optional for library exercises
+  client        Client?   @relation(fields: [clientId], references: [id])
 }
 
 model ExerciseMuscleGroup {
@@ -127,7 +130,6 @@ model ExerciseMuscleGroup {
   description String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  exercises   Exercise[]
 }
 
 

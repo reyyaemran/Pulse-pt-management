@@ -19,14 +19,14 @@ export default async function ExerciseDetailPage({ params }: { params: { id: str
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" asChild>
-            <Link href="/exercises">
+          <Link href="/exercises">
               <ChevronLeft className="h-4 w-4" />
-            </Link>
+          </Link>
           </Button>
           <div>
             <h1 className="text-3xl font-bold tracking-tight">{exercise.name}</h1>
             <p className="text-muted-foreground">{exercise.category}</p>
-          </div>
+        </div>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm">
@@ -38,15 +38,15 @@ export default async function ExerciseDetailPage({ params }: { params: { id: str
             Edit Exercise
           </Button>
         </div>
-      </div>
+          </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
-          <CardHeader>
+          <Card>
+                <CardHeader>
             <CardTitle>Details</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            <div>
+                <div>
               <p className="text-sm font-medium">Difficulty</p>
               <Badge variant={
                 exercise.difficulty === "beginner" ? "secondary" :
@@ -55,11 +55,11 @@ export default async function ExerciseDetailPage({ params }: { params: { id: str
               }>
                 {exercise.difficulty.charAt(0).toUpperCase() + exercise.difficulty.slice(1)}
               </Badge>
-            </div>
+      </div>
             <div>
               <p className="text-sm font-medium">Equipment</p>
               <p className="text-sm text-muted-foreground">{exercise.equipment}</p>
-            </div>
+          </div>
             <div>
               <p className="text-sm font-medium">Target Muscles</p>
               <p className="text-sm text-muted-foreground">{exercise.targetMuscles}</p>
@@ -70,8 +70,8 @@ export default async function ExerciseDetailPage({ params }: { params: { id: str
         <Card className="md:col-span-2">
           <CardHeader>
             <CardTitle>Description</CardTitle>
-          </CardHeader>
-          <CardContent>
+                </CardHeader>
+                <CardContent>
             <p className="text-sm text-muted-foreground">{exercise.description}</p>
           </CardContent>
         </Card>
@@ -81,21 +81,21 @@ export default async function ExerciseDetailPage({ params }: { params: { id: str
             <CardTitle>Instructions</CardTitle>
           </CardHeader>
           <CardContent>
-            <ol className="list-decimal list-inside space-y-2">
+                  <ol className="list-decimal list-inside space-y-2">
               {exercise.instructions.map((instruction: string, index: number) => (
                 <li key={index} className="text-sm text-muted-foreground">
-                  {instruction}
-                </li>
-              ))}
-            </ol>
-          </CardContent>
-        </Card>
+                        {instruction}
+                      </li>
+                    ))}
+                  </ol>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader>
+          <Card>
+            <CardHeader>
             <CardTitle>Tips</CardTitle>
-          </CardHeader>
-          <CardContent>
+            </CardHeader>
+            <CardContent>
             <ul className="list-disc list-inside space-y-2">
               {exercise.tips.map((tip: string, index: number) => (
                 <li key={index} className="text-sm text-muted-foreground">
@@ -103,14 +103,14 @@ export default async function ExerciseDetailPage({ params }: { params: { id: str
                 </li>
               ))}
             </ul>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader>
+          <Card>
+            <CardHeader>
             <CardTitle>Variations</CardTitle>
-          </CardHeader>
-          <CardContent>
+            </CardHeader>
+            <CardContent>
             <ul className="list-disc list-inside space-y-2">
               {exercise.variations.map((variation: string, index: number) => (
                 <li key={index} className="text-sm text-muted-foreground">
@@ -118,8 +118,8 @@ export default async function ExerciseDetailPage({ params }: { params: { id: str
                 </li>
               ))}
             </ul>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
       </div>
     </DashboardShell>
   )

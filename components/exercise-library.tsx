@@ -27,9 +27,24 @@ import {
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Link from "next/link"
-import { exercises, Exercise } from "./exercise-data"
+import { useEffect, useState } from "react"
+
+export interface Exercise {
+  id: string;
+  name: string;
+  category: string;
+  difficulty: string;
+  equipment: string;
+  targetMuscles?: string;
+  description?: string;
+  instructions?: string[];
+  tips?: string[];
+  variations?: string[];
+}
 
 export function ExerciseLibrary() {
+  const [exercises, setExercises] = useState<Exercise[]>([])
+  const [loading, setLoading] = useState(true)
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -178,6 +193,17 @@ export function ExerciseLibrary() {
   const categories = React.useMemo(() => {
     const uniqueCategories = Array.from(new Set(exercises.map(exercise => exercise.category)))
     return uniqueCategories.sort()
+  }, [])
+
+  useEffect(() => {
+    async function fetchExercises() {
+      setLoading(true)
+      const res = await fetch("/api/exercises")
+      const data = await res.json()
+      setExercises(data)
+      setLoading(false)
+    }
+    fetchExercises()
   }, [])
 
   return (
